@@ -1,0 +1,64 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js')
+    script(src='/scripts/daypilot-all.min.js' type='text/javascript')
+  block content
+    div(ng-app='main' ng-controller='DemoCtrl')
+      daypilot-gantt#dp(daypilot-config='config')
+      div
+        | New task:
+        button(ng-click='add()') Add
+      div
+        | First task:
+        button(ng-click='move()') Move
+        button(ng-click='rename()') Rename
+      div
+        | Object:
+        button(ng-click='message()') Show Message
+      div
+        | Task array (debug):
+        div(ng-repeat='item in config.tasks')
+          | {{item}}
+    script(type='text/javascript').
+      var app = angular.module('main', ['daypilot']).controller('DemoCtrl', function($scope) {
+      $scope.config = {
+      scale: "Day",
+      timeHeaders: [
+      { groupBy: "Month" },
+      { groupBy: "Day", format: "d" }
+      ],
+      tasks: [
+      {
+      start: new DayPilot.Date("2014-09-05T00:00:00"),
+      end: new DayPilot.Date("2014-09-06T00:00:00"),
+      id: DayPilot.guid(),
+      text: "One-Day Event"
+      }
+      ]
+      };
+      $scope.add = function() {
+      $scope.config.tasks.push(
+      {
+      start: new DayPilot.Date("2014-09-05T00:00:00"),
+      end: new DayPilot.Date("2014-09-06T00:00:00"),
+      id: DayPilot.guid(),
+      text: "One-Day Event"
+      }
+      );
+      };
+      $scope.move = function() {
+      var event = $scope.config.tasks[0];
+      event.start = event.start.addDays(1);
+      event.end = event.end.addDays(1);
+      };
+      $scope.rename = function() {
+      $scope.config.tasks[0].text = "New name";
+      };
+      $scope.message = function() {
+      $scope.dp.message("Hi");
+      console.log($scope.dp);
+      };
+      });

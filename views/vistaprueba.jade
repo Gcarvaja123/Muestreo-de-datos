@@ -1,0 +1,16 @@
+doctype html
+html(lang='en' ng-app="listCtrl")    
+  head
+    script(src='/codebase/dhtmlxgantt.js')
+    link(rel='stylesheet' href='/codebase/dhtmlxgantt.css' type='text/css')
+
+  body(ng-controller="GanttCtrl") 
+    #gantt_here(style='width:100%; height:100vh;')
+    script.
+      gantt.config.date_format = "%Y-%m-%d %H:%i";
+      gantt.init("gantt_here");
+      console.log(!{JSON.stringify(data)});
+      local_data = !{JSON.stringify(data)};
+      gantt.parse({
+        data: local_data
+      });
